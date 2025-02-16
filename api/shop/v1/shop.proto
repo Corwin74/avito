@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package shop.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "shop/api/shop/v1;v1";
+
+// The Shop service definition.
+service Shop {
+  rpc Info(InfoRequest) returns (InfoResponse) {
+    option (google.api.http) = {
+      get: "/api/info"
+    };
+  }
+  rpc SendCoin(SentTransaction) returns (BaseResponse) {
+    option (google.api.http) = {
+      post: "/api/sendCoin"
+      body: "*"
+    };
+  }
+  rpc BuyItem(Item) returns (BaseResponse) {
+    option (google.api.http) = {
+      get: "/api/buy/{name}"
+    };
+  }
+  rpc Auth(AuthRequest) returns (AuthResponse) {
+    option (google.api.http) = {
+      post: "/api/auth"
+      body: "*"
+    };
+  }
+}
+
+message InfoRequest {
+}
+
+// InfoResponse представляет информацию о монетах, инвентаре и истории транзакций
+message InfoResponse {
+  int32 coins = 1;
+  repeated InventoryItem inventory = 2;
+  CoinHistoryDetails coin_history = 3;
+}
+
+message Item {
+  string name = 1;
+}
+
+// Предмет в инвентаре
+message InventoryItem {
+  string type = 1;
+  int32 quantity = 2;
+}
+
+// История транзакций с монетами
+message CoinHistoryDetails {
+  repeated ReceivedTransaction received = 1;
+  repeated SentTransaction sent = 2;
+}
+
+// Полученная транзакция
+message ReceivedTransaction {
+  string from_user = 1;
+  int32 amount = 2;
+}
+
+// Отправленная транзакция
+message SentTransaction {
+  string to_user = 1;
+  int32 amount = 2;
+}
+
+
+// Запрос на аутентификацию
+message AuthRequest {
+  // Имя пользователя для аутентификации
+  string username = 1;
+  
+  // Пароль для аутентификации
+  string password = 2;
+}
+
+// Ответ на запрос аутентификации
+message AuthResponse {
+  oneof data {
+    string token = 1; 
+    string error = 2;
+  } 
+}
+
+message BaseResponse {
+    string error = 1;
+} 

@@ -1,0 +1,13 @@
+server:
+  http:
+    addr: 0.0.0.0:8080
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9000
+    timeout: 1s
+data:
+  database:
+    driver: pgx
+    source: postgres://db_admin:avito2025@postgres_avito_shop:5432/avito_shop
+secrets:
+  jwtKey: "must be securing to env"

@@ -5,8 +5,6 @@ services:
     restart: no
     ports:
       - "8080:8080"
-    volumes:
-    - ./configs/:/data/
     environment:
       - POSTGRES_USER=db_admin
       - POSTGRES_PASSWORD=avito2025
